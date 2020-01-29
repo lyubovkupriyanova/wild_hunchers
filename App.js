@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,8 +14,9 @@ import {
   View,
   Text,
   StatusBar,
+  Image
 } from 'react-native';
-
+import { Button } from 'native-base';
 import {
   Header,
   LearnMoreLinks,
@@ -23,53 +24,33 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import GalleryPicker from './GalleryPicker';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Wild Hunchers are in San-Marino</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+class App extends React.Component {
+  state={
+    imagePickerIsOpened: false,
+    image: ''
+  }
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <View>
+        <Button onPress={ ()=>{ this.setState({ imagePickerIsOpened: true }) }}>
+        </Button>
+        {this.state.imagePickerIsOpened &&
+          <GalleryPicker
+            title={ 'Hello from picker' }
+            targetWidth_dpi={ 50 }
+            targetHeight_dpi={ 50 }
+            onChoosePhoto={ (base64)=>{ this.setState({ image: base64 })}}
+            stopLoading={ ()=>{ this.setState({ imagePickerIsOpened: false })}}/>
+        }
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -81,16 +62,34 @@ const styles = StyleSheet.create({
     right: 0,
   },
   body: {
-    backgroundColor: Colors.green,
+    backgroundColor: Colors.white,
   },
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
   },
+  sectionHorizContainer: {
+    flexDirection: 'row',
+    padding: 0,
+    paddingHorizontal: 56,
+  },
+  sectionHorizContainer2: {
+    flexDirection: 'row',
+    padding: 0,
+    paddingHorizontal: 20,
+  },
+  sectionHeaderTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: 'midnightblue',
+    paddingHorizontal: 10,
+    paddingRight: 1,
+    padding: 40
+  },
   sectionTitle: {
     fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+    fontWeight: '800',
+    color: 'midnightblue',
   },
   sectionDescription: {
     marginTop: 8,
